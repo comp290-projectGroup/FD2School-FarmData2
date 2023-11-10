@@ -29,9 +29,21 @@ describe("Testing crop filter for seeding report", () => {
         cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input] > [data-cy=option1]')
 
         //check each row has the same filtering crop
-        cy.get("[data-cy=h1]>[data-cy=r0]").should("have.text","ARUGULA")
-        cy.get("[data-cy=h1]>[data-cy=r1]").should("have.text","ARUGULA")
-        cy.get("[data-cy=h1]>[data-cy=r2]").should("have.text","ARUGULA")
+        cy.get("[data-cy=h1]>[data-cy=r0]").should("have.text", "ARUGULA")
+        cy.get("[data-cy=h1]>[data-cy=r1]").should("have.text", "ARUGULA")
+        cy.get("[data-cy=h1]>[data-cy=r2]").should("have.text", "ARUGULA")
 
-    })    
-  })
+    })
+
+    //the dropdown for the Crop filter contains only crops for which there are seeding logs in the date range used to generate the report.
+
+    it("Tests that when a specific crop is selected, the table will have only the seeding logs for that crop", () => {
+        cy.get('[data-cy=start-date-select] > [data-cy=date-select]').type('2020-01-01').blur()
+        cy.get('[data-cy=end-date-select] > [data-cy=date-select]').type('2020-01-05').blur()
+        cy.get('[data-cy=generate-rpt-btn]').click()
+        //this range only has strawberry, so the filter should only contain strawberry and all
+        cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').children().should('have.length', '2')
+        cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input] > [data-cy=option1]').children().should('have.value', 'STRAWBERRY')
+        cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input] > [data-cy=option2]').should('have.value', 'All')
+    })
+})
