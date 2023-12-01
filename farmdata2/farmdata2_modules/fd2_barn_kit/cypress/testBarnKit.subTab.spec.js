@@ -21,4 +21,8 @@ describe('testForBarnKitSubTabs', () => {
       cy.get('.tabs--secondary > :nth-child(3) > a').should("have.contain","Transplanting Report")
     })
 
+  it('Count of tabs is correct.', () => {
+      cy.get('.tabs--secondary').should('have.length', 3)
+    })
+  
   })
